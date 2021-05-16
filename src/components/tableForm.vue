@@ -1,5 +1,5 @@
 <template>
-    <div class="m-4 d-flex flex-column justify-content-center align-items-center">
+    <div class="m-4 d-flex flex-column justify-content-center align-items-center" style="transform: scale(0.7);">
         <div>
             <img src="https://firebasestorage.googleapis.com/v0/b/watchapp-e35a6.appspot.com/o/banner.png?alt=media&token=02ae59d2-c30a-4c98-a5be-18cce682ff3f">
         </div>
