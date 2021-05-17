@@ -58,6 +58,7 @@
                             <div v-show="!data.item.editing">{{data.item.date}}</div>
                             <div v-show="data.item.editing">
                                 <datepicker v-model="data.item.date" format="yyyy/M/dd" :language="zh"></datepicker>
+                                <!-- <datepicker v-model="data.item.date" format="yyyy/M/dd" :language="zh"></datepicker> -->
                             </div>
                         </template>
                         <template #cell(type)="data">
@@ -279,7 +280,7 @@ export default {
         addInnerRow(index){
             var emptyRow = {
                 id: this.tableData[index].innerData.length,
-                date: new Date().toLocaleString().slice(0, 9),
+                date: '',
                 type: '',
                 inHolding: null,
                 inHoldingPrice: null,
