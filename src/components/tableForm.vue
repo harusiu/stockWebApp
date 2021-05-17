@@ -9,24 +9,24 @@
         <div style="width: 969px;">
             <b-table :items="tableData" :fields="fields" sort-icon-left fixed borderless class="text-center" style="color: white;">
                 <template #head(stockName)="row">
-                    <div style="margin-left: 10px;">{{row.label}}</div>
+                    <div style="margin-left: 5px;">{{row.label}}</div>
                 </template>
                 <template #cell(stockName)="row">
                     <div v-show="!row.item.editing">
-                        <b-icon v-show="row.detailsShowing" size="sm" @click="row.toggleDetails" icon="caret-down-fill" style="cursor: pointer; color: #dab56e;"></b-icon>
-                        <b-icon v-show="!row.detailsShowing" size="sm" @click="row.toggleDetails" icon="caret-right-fill" style="cursor: pointer; color: #dab56e;"></b-icon>
-                        <label style="width: 60px;">{{row.item.stockName}}</label>
+                        <label style="margin-left: 3px;">{{row.item.stockName}}</label>
                     </div>
                     <div v-show="row.item.editing">
-                        <b-form-input v-model="row.item.stockName" @keypress.enter="saveRow(row)" class="tableInput" style="margin-left: 8px;"></b-form-input>
+                        <b-form-input v-model="row.item.stockName" @keypress.enter="saveRow(row)" style="margin-left: 8px;"></b-form-input>
                     </div>
                 </template>
                 <template #cell(number)="row">
-                    <div v-show="!row.item.editing">
-                        {{row.item.number}}
+                    <div v-show="!row.item.editing" style="padding-right: 15px;">
+                        <b-icon v-show="row.detailsShowing" size="sm" @click="row.toggleDetails" icon="caret-down-fill" style="cursor: pointer; color: #dab56e;"></b-icon>
+                        <b-icon v-show="!row.detailsShowing" size="sm" @click="row.toggleDetails" icon="caret-right-fill" style="cursor: pointer; color: #dab56e;"></b-icon>
+                        <label style="width: 90px;">{{row.item.number}}</label>
                     </div>
                     <div v-show="row.item.editing">
-                        <b-form-input v-model="row.item.number" class="tableInput"></b-form-input>
+                        <b-form-input v-model="row.item.number" ></b-form-input>
                     </div>
                 </template>
                 <template #cell(shareHolding)="row">
@@ -309,13 +309,17 @@ export default {
             this.tableData[parentIndex]._showDetails = true;
         },
         deteleRow(data){
-            usersCollection.doc(data.item.stockName).delete().then(()=>{
-                console.log("delete success.")
+            if(data.item.stockName == '' || data.item.number == ''){
                 this.tableData.splice(data.index, 1)
-            }).catch((error)=>{
-                alert("刪除失敗，請找工程阿逼")
-                console.log(error)
-            })
+            } else if (data.item.stockName != null && data.item.number != null){
+                usersCollection.doc(data.item.stockName).delete().then(()=>{
+                    console.log("delete success.")
+                    this.tableData.splice(data.index, 1)
+                }).catch((error)=>{
+                    alert("刪除失敗，請找工程阿逼")
+                    console.log(error)
+                })
+            }
         },
         deteleInnerRow(data, parentIndex){
             var index = this.tableData[parentIndex].innerData.findIndex((el)=>el.id==data.item.id)
