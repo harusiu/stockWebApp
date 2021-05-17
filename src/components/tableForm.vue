@@ -228,6 +228,7 @@ export default {
             console.log(data)
             console.log(date)
             this.tableData[parentIndex].innerData[data.index].date = date
+            this.dateSelected = ''
         },
         calTotal(data){
             var total = (parseFloat(data.inHolding)*parseFloat(data.inHoldingPrice))+parseFloat(data.fee)
@@ -244,6 +245,7 @@ export default {
             var result = 0 
             data.item.innerData.forEach((element) => {
                 result = result + ((parseFloat(element.inHolding)*parseFloat(element.inHoldingPrice))+parseFloat(element.fee))
+                result = parseInt(result)
             });
             var count = 0
             data.item.innerData.forEach((element)=>{
@@ -301,9 +303,7 @@ export default {
             this.tableData[parentIndex].innerData[index].editing = true;
         },
         saveInnerRow(data, parentIndex){
-            //var date = new Date(data.item.date).toISOString().slice(0, 10)
             var index = this.tableData[parentIndex].innerData.findIndex((el)=>el.id==data.item.id)
-            //this.tableData[parentIndex].innerData[index].date = date;
             this.tableData[parentIndex].innerData[index].editing = false;
             this.tableData[parentIndex]._showDetails = false;
             usersCollection.doc(this.tableData[parentIndex].stockName).set(this.tableData[parentIndex])
