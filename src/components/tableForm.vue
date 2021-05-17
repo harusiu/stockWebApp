@@ -57,7 +57,7 @@
                         <template #cell(date)="data">
                             <div v-show="!data.item.editing">{{data.item.date}}</div>
                             <div v-show="data.item.editing">
-                                <datepicker v-model="data.item.date" format="yyyy/M/dd" :language="zh"></datepicker>
+                                <datepicker @closed="formatDate(data, innerRow.index)" v-model="dateSelected" format="yyyy-MM-dd" :language="zh"></datepicker>
                                 <!-- <datepicker v-model="data.item.date" format="yyyy/M/dd" :language="zh"></datepicker> -->
                             </div>
                         </template>
@@ -185,6 +185,7 @@ export default {
                 【裡面】交易日期－交易類別－買入股數－買入價格－手續費－合計 */
             //   交易類別(選單): 定期定額 / 主動買入
             zh: zh,
+            dateSelected: '',
             transProps: {
                 // Transition name
                 name: 'flip-list'
@@ -221,6 +222,12 @@ export default {
                     this.tableData.push(doc.data())
                 });
             })
+        },
+        formatDate(data, parentIndex){
+            var date = new Date(this.dateSelected).toLocaleDateString('zh',{ year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+            console.log(data)
+            console.log(date)
+            this.tableData[parentIndex].innerData[data.index].date = date
         },
         calTotal(data){
             var total = (parseFloat(data.inHolding)*parseFloat(data.inHoldingPrice))+parseFloat(data.fee)
@@ -294,9 +301,9 @@ export default {
             this.tableData[parentIndex].innerData[index].editing = true;
         },
         saveInnerRow(data, parentIndex){
-            var date = new Date(data.item.date).toISOString().slice(0, 10)
+            //var date = new Date(data.item.date).toISOString().slice(0, 10)
             var index = this.tableData[parentIndex].innerData.findIndex((el)=>el.id==data.item.id)
-            this.tableData[parentIndex].innerData[index].date = date;
+            //this.tableData[parentIndex].innerData[index].date = date;
             this.tableData[parentIndex].innerData[index].editing = false;
             this.tableData[parentIndex]._showDetails = false;
             usersCollection.doc(this.tableData[parentIndex].stockName).set(this.tableData[parentIndex])
