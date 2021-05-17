@@ -224,7 +224,7 @@ export default {
         },
         calTotal(data){
             var total = (parseFloat(data.inHolding)*parseFloat(data.inHoldingPrice))+parseFloat(data.fee)
-            return total
+            return parseInt(total)
         },
         getShareHolding(data){
             var result = 0 
