@@ -8,6 +8,9 @@
         </div>
         <div style="width: 969px;">
             <b-table :items="tableData" :fields="fields" sort-icon-left fixed borderless class="text-center" style="color: white;">
+                <template #head(stockName)="row">
+                    <div style="margin-left: 10px;">{{row.label}}</div>
+                </template>
                 <template #cell(stockName)="row">
                     <div v-show="!row.item.editing">
                         <b-icon v-show="row.detailsShowing" size="sm" @click="row.toggleDetails" icon="caret-down-fill" style="cursor: pointer; color: #dab56e;"></b-icon>
@@ -155,9 +158,7 @@ input[type="text"], textarea {
   outline: none;
   box-shadow: none;
 }
-.tableHeader-number{
-    margin-left: 5px;
-}
+
 body  .table.b-table>tfoot>tr>[aria-sort=none], body  .table.b-table>thead>tr>th[aria-sort=none]{
   background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='101' height='101' view-box='0 0 101 101' preserveAspectRatio='none'%3e%3cpath fill='darkgoldenrod' opacity='.3' d='M51 1l25 23 24 22H1l25-22z'/%3e%3cpath fill='darkgoldenrod' opacity='.3' d='M51 101l25-23 24-22H1l25 22z'/%3e%3c/svg%3e")!important;
 }
@@ -188,7 +189,7 @@ export default {
                 name: 'flip-list'
             },  
             fields: [
-                { key: 'stockName', label: '股名' }, { key: 'number', label: '股號',  thClass: 'tableHeader-number'}, { key: 'shareHolding', label: '持有股數'}, 
+                { key: 'number', label: '股號' }, { key: 'stockName', label: '股名' }, { key: 'shareHolding', label: '持有股數'}, 
                 { key: 'shareHoldingPrice', label: '持有成本均價'}, { key: 'blank2', label: ''}, { key: 'blank3', label: ''},
                 {key: 'counts', label: '交易筆數'},
             ],
