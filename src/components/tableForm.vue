@@ -18,7 +18,7 @@
                         <label style="width: 60px;">{{row.item.stockName}}</label>
                     </div>
                     <div v-show="row.item.editing">
-                        <b-form-input v-model="row.item.stockName" class="tableInput" style="margin-left: 8px;"></b-form-input>
+                        <b-form-input v-model="row.item.stockName" @keypress.enter="saveRow(row)" class="tableInput" style="margin-left: 8px;"></b-form-input>
                     </div>
                 </template>
                 <template #cell(number)="row">
@@ -26,7 +26,7 @@
                         {{row.item.number}}
                     </div>
                     <div v-show="row.item.editing">
-                        <b-form-input v-model="row.item.number" @keypress.enter="saveRow(row)" class="tableInput"></b-form-input>
+                        <b-form-input v-model="row.item.number" class="tableInput"></b-form-input>
                     </div>
                 </template>
                 <template #cell(shareHolding)="row">
