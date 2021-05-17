@@ -44,7 +44,7 @@
                 <template #row-details="innerRow">
                     <b-table :items="innerRow.item.innerData" :fields="detailFields" sort-icon-left fixed borderless class="text-center" style="color: white;">
                         <template #head(action)>
-                            <b-button @click="addInnerRow(innerRow.index)" size="sm" style="margin-left: -8px; padding: 3px 6.5px; font-size: 13px; background-color: #dab56e; border-color: #dab56e;">新增交易</b-button>
+                            <b-button @click="addInnerRow(innerRow.index)" size="sm" style="margin-left: -8px; padding: 4px 6.5px; font-size: 13px; background-color: #dab56e; border-color: #dab56e;">新增交易</b-button>
                         </template>
                         <template #head(date)="data">
                             <div style="margin-left: 5px; width: 80px;">
@@ -88,14 +88,14 @@
                             <div class="d-flex justify-content-end">
                                 <b-button v-show="!data.item.editing" style="margin-right: 5px; background-color: #dab56e; border-color: #dab56e;" size="sm" @click="editInnerRow(data, innerRow.index)">
                                     <p style="font-size: 10px; margin-bottom: 0; margin-right: 4px; background-color: #dab56e;">
-                                        <b-icon icon="pencil" style="cursor: pointer; margin-left: 5px; font-size: 12px; background-color: #dab56e;"></b-icon>
-                                        <label style="cursor: pointer; margin-left: 3px; font-size: 12px; background-color: #dab56e;">編輯</label>
+                                        <b-icon icon="pencil" style="cursor: pointer; margin-left: 2px; font-size: 12px; background-color: #dab56e;"></b-icon>
+                                        <label style="cursor: pointer; margin-left: 3px; font-size: 13px; background-color: #dab56e;">編輯</label>
                                     </p>
                                 </b-button>
                                 <b-button v-show="data.item.editing" style="margin-right: 5px; background-color: #dab56e; border-color: #dab56e;" size="sm" @click="saveInnerRow(data, innerRow.index)">
-                                    <p style="font-size: 10px; margin-bottom: 0; margin-right: 3px; background-color: #dab56e;">
-                                        <b-icon icon="box-arrow-in-right" style="cursor: pointer; margin-left: 2px; font-size: 12px; background-color: #dab56e;"></b-icon>
-                                        儲存
+                                    <p style="font-size: 10px; margin-bottom: 0; margin-right: 4px; background-color: #dab56e;">
+                                        <b-icon icon="box-arrow-in-right" style="cursor: pointer; margin-left: 5px; font-size: 12px; background-color: #dab56e;"></b-icon>
+                                        <label style="cursor: pointer; margin-left: 3px; font-size: 13px; background-color: #dab56e;">儲存</label>
                                     </p>
                                 </b-button>
                                 <b-icon icon="trash" @click="deteleInnerRow(data, innerRow.index)" style="cursor: pointer; margin-right: 6.5px; margin-top: 6px;  margin-left: 4px;"></b-icon>
@@ -221,7 +221,7 @@ export default {
             })
         },
         calTotal(data){
-            var total = (parseInt(data.inHolding)*parseInt(data.inHoldingPrice))+parseInt(data.fee)
+            var total = (parseFloat(data.inHolding)*parseFloat(data.inHoldingPrice))+parseFloat(data.fee)
             return total
         },
         getShareHolding(data){
@@ -234,11 +234,11 @@ export default {
         getShareHoldingPrice(data){
             var result = 0 
             data.item.innerData.forEach((element) => {
-                result = result + ((parseInt(element.inHolding)*parseInt(element.inHoldingPrice))+parseInt(element.fee))
+                result = result + ((parseFloat(element.inHolding)*parseFloat(element.inHoldingPrice))+parseFloat(element.fee))
             });
             var count = 0
             data.item.innerData.forEach((element)=>{
-                count = count + parseInt(element.inHolding)
+                count = count + parseFloat(element.inHolding)
             })
             var final = parseFloat(result/count).toFixed(2)
             return final;
