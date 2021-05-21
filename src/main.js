@@ -4,20 +4,20 @@ import "./registerServiceWorker";
 import store from "./store";
 import "./includes/firebase";
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
-import Datepicker from 'vuejs-datepicker';
+import { DatePicker } from 'ant-design-vue';
 
 Vue.config.productionTip = false;
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
-
+import 'ant-design-vue/dist/antd.css'; // or 'ant-design-vue/dist/antd.less
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
-Vue.use(Datepicker);
+Vue.use(DatePicker);
 
 
 new Vue({
