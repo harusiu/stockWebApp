@@ -74,7 +74,7 @@
                             <template #cell(date)="data">
                                 <div v-show="!data.item.editing" class="tableCell-innerRow tableCell-date">{{data.item.date}}</div>
                                 <div v-show="data.item.editing">
-                                    <DatePicker placeholder="選擇日期" @change="formatDate(data, innerRow.index)" v-model="dateSelected" :autoFocus="data.item.focus">
+                                    <DatePicker placeholder="選擇日期" @change="formatDate(data, innerRow.index)" v-model="data.item.date">
                                         <a-icon slot="suffixIcon" />
                                     </DatePicker>
                                     <!-- <datepicker @closed="formatDate(data, innerRow.index)" v-model="dateSelected" format="yyyy-MM-dd" :language="zh"></datepicker> -->
