@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-column align-items-center" style="transform: scale(0.9); height:120vh;">
+    <div class="d-flex flex-column align-items-center" style="transform: scale(0.85); height:120vh;">
         <div class="div-head">
             <img src="https://firebasestorage.googleapis.com/v0/b/stockwebapp-9ad1d.appspot.com/o/footer.png?alt=media&token=dce49b27-8eb6-45de-acc1-6be1acf42ff7"/>
         </div>
@@ -42,8 +42,8 @@
                     </div>
                     <div v-show="row.item.editing">
                         <div class="d-flex" style="margin-top: 5px;">
-                            <b-form-input class="tableCell-stockNameInput" v-model="row.item.stockName" placeholder="輸入股名"></b-form-input>
                             <b-form-input class="tableCell-numberInput" v-model="row.item.number" placeholder="股號" @keypress.enter="saveRow(row)"></b-form-input>
+                            <b-form-input class="tableCell-stockNameInput" v-model="row.item.stockName" placeholder="輸入股名"></b-form-input>
                         </div>
                     </div>
                 </template>
