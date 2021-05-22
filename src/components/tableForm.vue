@@ -42,8 +42,8 @@
                     </div>
                     <div v-show="row.item.editing">
                         <div class="d-flex" style="margin-top: 5px;">
-                            <b-form-input class="tableCell-numberInput" v-model="row.item.number" placeholder="股號" @keypress.enter="saveRow(row)"></b-form-input>
-                            <b-form-input class="tableCell-stockNameInput" v-model="row.item.stockName" placeholder="輸入股名"></b-form-input>
+                            <b-form-input class="tableCell-numberInput" v-model="row.item.number" placeholder="股號"></b-form-input>
+                            <b-form-input class="tableCell-stockNameInput" v-model="row.item.stockName" placeholder="輸入股名" @keypress.enter="saveRow(row)"></b-form-input>
                         </div>
                     </div>
                 </template>
