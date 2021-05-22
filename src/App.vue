@@ -13,7 +13,7 @@ import tableForm from "./components/tableForm.vue";
 export default {
   name: "App",
   components: {
-    tableForm
+    tableForm,
   },
 };
 </script>
