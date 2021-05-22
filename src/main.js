@@ -4,8 +4,8 @@ import "./registerServiceWorker";
 import store from "./store";
 import "./includes/firebase";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
-import 'v2-datepicker/lib/index.css';   // v2 need to improt css
-import V2Datepicker from 'v2-datepicker';
+import "v2-datepicker/lib/index.css"; // v2 need to improt css
+import V2Datepicker from "v2-datepicker";
 
 Vue.config.productionTip = false;
 
@@ -16,7 +16,7 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
-Vue.use(V2Datepicker)
+Vue.use(V2Datepicker);
 
 new Vue({
   store,

@@ -238,7 +238,11 @@
                     :date-format-options="{ year: 'numeric', month: '2-digit', day: 'numeric' }"
                   >
                   </b-form-datepicker> -->
-                  <v2-datepicker v-model="data.item.date" @change="formatDate(data, innerRow)" placeholder="選擇日期"></v2-datepicker>
+                  <v2-datepicker
+                    v-model="data.item.date"
+                    @change="formatDate(data, innerRow)"
+                    placeholder="選擇日期"
+                  ></v2-datepicker>
                   <!-- <datepicker @closed="formatDate(data, innerRow.index)" v-model="dateSelected" format="yyyy-MM-dd" :language="zh"></datepicker> -->
                   <!-- <datepicker v-model="data.item.date" format="yyyy/M/dd" :language="zh"></datepicker> -->
                 </div>
@@ -373,14 +377,14 @@ body {
   border-bottom: 1px solid rgba(102, 108, 114, 0.425);
   text-align: center;
   cursor: pointer;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 .tableHeader-numberBtn {
   width: 240px;
   text-decoration: none !important;
   color: rgb(241, 241, 241) !important;
   padding: 0 !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
   border: 0 !important;
 }
 .tableHeader-numberBtn:focus {
@@ -392,19 +396,22 @@ body {
   text-decoration: none !important;
   color: rgb(241, 241, 241) !important;
   padding: 0 !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
   border: 0 !important;
+  margin-top: 2px;
 }
 .tableHeader-shareHoldingBtn:focus {
   outline: none !important;
   box-shadow: none !important;
 }
 .tableHeader-dateBtn {
+  width: 95px;
   text-decoration: none !important;
   color: rgb(241, 241, 241) !important;
   padding: 0 !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
   border: 0 !important;
+  margin-top: 2px;
 }
 .tableHeader-dateBtn:focus {
   outline: none !important;
@@ -477,16 +484,16 @@ body {
   font-size: 18px;
   font-weight: normal;
 }
-.v2-date-icon{
+.v2-date-icon {
   display: none;
 }
-.v2-date-wrap{
+.v2-date-wrap {
   min-width: 120px !important;
 }
-.v2-date-clear{
+.v2-date-clear {
   display: none;
 }
-.v2-picker-trigger{
+.v2-picker-trigger {
   color: rgb(70, 70, 70) !important;
   font-size: 18px !important;
   font-weight: normal !important;
