@@ -8,7 +8,7 @@
         src="https://firebasestorage.googleapis.com/v0/b/stockwebapp-9ad1d.appspot.com/o/footer.png?alt=media&token=dce49b27-8eb6-45de-acc1-6be1acf42ff7"
       />
     </div>
-    <div class="mb-3 mt-4" style="margin-left: -780px">
+    <div class="mb-3 mt-4" style="margin-left: -43px">
       <b-button
         class="w-10"
         variant="outline-light"
@@ -22,6 +22,20 @@
         variant="outline-light"
         >全關</b-button
       >
+      <b-button
+        @click="editTable()"
+        v-show="!tableEditing"
+        style="margin-left: 679px; font-weight: bold"
+        variant="outline-light"
+        >編輯</b-button
+      >
+      <b-button
+        @click="saveTable()"
+        v-show="tableEditing"
+        style="margin-left: 679px; font-weight: bold"
+        variant="outline-light"
+        >儲存</b-button
+      >
     </div>
     <div style="width: 969px; height: auto">
       <b-table
@@ -33,6 +47,7 @@
         borderless
         class="text-center"
         style="color: white"
+        :busy="tableBusy"
       >
         <template #head(number)="row">
           <div class="tableHeaderFont tableHeader-number">
@@ -52,7 +67,7 @@
                 style="cursor: pointer; color: #dab56e"
               ></b-icon>
               <b-icon
-                v-show="sortBy == 'shareHolding'"
+                v-show="sortBy != 'number'"
                 icon="caret-up"
                 style="cursor: pointer; color: #dab56e"
               ></b-icon>
@@ -78,7 +93,7 @@
                 style="cursor: pointer; color: #dab56e"
               ></b-icon>
               <b-icon
-                v-show="sortBy == 'number'"
+                v-show="sortBy != 'shareHolding'"
                 icon="caret-up"
                 style="cursor: pointer; color: #dab56e"
               ></b-icon>
@@ -88,7 +103,28 @@
         </template>
         <template #head(shareHoldingPrice)="row">
           <div class="tableHeaderFont tableHeader-shareHolding">
-            {{ row.label }}
+            <b-button
+              variant="link"
+              class="tableHeader-shareHoldingPriceBtn"
+              @click="sortShareHoldingPrice()"
+            >
+              <b-icon
+                v-show="sortOrder == 'asc' && sortBy == 'shareHoldingPrice'"
+                icon="caret-up-fill"
+                style="cursor: pointer; color: #dab56e"
+              ></b-icon>
+              <b-icon
+                v-show="sortOrder != 'asc' && sortBy == 'shareHoldingPrice'"
+                icon="caret-down-fill"
+                style="cursor: pointer; color: #dab56e"
+              ></b-icon>
+              <b-icon
+                v-show="sortBy != 'shareHoldingPrice'"
+                icon="caret-up"
+                style="cursor: pointer; color: #dab56e"
+              ></b-icon>
+              <span>{{ row.label }}</span>
+            </b-button>
           </div>
         </template>
         <template #head(counts)="row">
@@ -160,9 +196,18 @@
             <label class="tableCell-count-label">{{ getCounts(row) }}</label>
             <b-icon
               icon="trash"
+              v-show="tableEditing"
               @click="deteleRow(row)"
               style="
                 cursor: pointer;
+                margin-top: 5px;
+                background-color: rgb(41, 41, 41);
+              "
+            ></b-icon>
+            <b-icon
+              icon=""
+              v-show="!tableEditing"
+              style="
                 margin-top: 5px;
                 background-color: rgb(41, 41, 41);
               "
@@ -230,21 +275,11 @@
                   {{ data.item.date }}
                 </div>
                 <div v-show="data.item.editing">
-                  <!-- <b-form-datepicker
-                    dropup
-                    @input="formatDate(data, innerRow)"
-                    v-model="data.item.date"
-                    placeholder="選擇日期"
-                    :date-format-options="{ year: 'numeric', month: '2-digit', day: 'numeric' }"
-                  >
-                  </b-form-datepicker> -->
                   <v2-datepicker
                     v-model="data.item.date"
                     @change="formatDate(data, innerRow)"
                     placeholder="選擇日期"
                   ></v2-datepicker>
-                  <!-- <datepicker @closed="formatDate(data, innerRow.index)" v-model="dateSelected" format="yyyy-MM-dd" :language="zh"></datepicker> -->
-                  <!-- <datepicker v-model="data.item.date" format="yyyy/M/dd" :language="zh"></datepicker> -->
                 </div>
               </template>
               <template #cell(type)="data">
@@ -342,7 +377,7 @@
         </template>
       </b-table>
     </div>
-    <div class="mb-3 mt-4" style="margin-left: -880px">
+    <div class="mb-3 mt-4" style="margin-left: -880px;">
       <b-button
         @click="closeAll()"
         style="font-weight: bold"
@@ -363,6 +398,7 @@ body {
 }
 .div-head {
   margin-top: -20px;
+  width: 100vw;
   position: relative;
   top: -10px;
 }
@@ -401,6 +437,19 @@ body {
   margin-top: 2px;
 }
 .tableHeader-shareHoldingBtn:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.tableHeader-shareHoldingPriceBtn{
+  width: 120px;
+  text-decoration: none !important;
+  color: rgb(241, 241, 241) !important;
+  padding: 0 !important;
+  font-size: 16px !important;
+  border: 0 !important;
+  margin-top: 2px;
+}
+.tableHeader-shareHoldingPriceBtn:focus{
   outline: none !important;
   box-shadow: none !important;
 }
@@ -585,10 +634,6 @@ export default {
                 【裡面】交易日期－交易類別－買入股數－買入價格－手續費－合計 */
       //   交易類別(選單): 定期定額 / 主動買入
       dateSelected: "",
-      transProps: {
-        // Transition name
-        name: "flip-list",
-      },
       sortDesc: false,
       fields: [
         { key: "number", label: "股號 / 股名" },
@@ -618,9 +663,12 @@ export default {
       ],
       selectType: ["主動買入", "定期定額"],
       tableData: [],
+      tableEditing: false,
+      tableTmp: [],
       sortOrder: "asc",
       sortInnerOrder: "asc",
       sortBy: "",
+      tableBusy: false,
     };
   },
   created() {
@@ -630,20 +678,45 @@ export default {
     getDataFromDB() {
       usersCollection.get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          if (doc.id != "sort") this.tableData.push(doc.data());
+          if (doc.id != "sort"){
+            this.tableData.push(doc.data())
+          }
           else if (doc.id == "sort") {
             this.sortBy = doc.data().sortBy;
             this.sortOrder = doc.data().sortOrder;
           }
         });
+      }).then(()=>{
         if (this.sortBy == "number") {
-          this.tableData.sort(function (a, b) {
-            return a.number - b.number;
-          });
+          if(this.sortOrder=="asc"){
+            this.tableData.sort(function (a, b) {
+              return a.number - b.number;
+            });
+          } else if(this.sortOrder=="desc"){
+            this.tableData.sort(function (a, b) {
+              return b.number - a.number;
+            });
+          }
         } else if (this.sortBy == "shareHolding") {
-          this.tableData.sort(function (a, b) {
-            return a.shareHolding - b.shareHolding;
-          });
+          if(this.sortOrder=="asc"){
+            this.tableData.sort(function (a, b) {
+              return a.shareHolding - b.shareHolding;
+            });
+          } else if(this.sortOrder=="desc"){
+            this.tableData.sort(function (a, b) {
+              return b.shareHolding - a.shareHolding;
+            });
+          }
+        } else if (this.sortBy == "shareHoldingPrice") {
+          if(this.sortOrder=="asc"){
+            this.tableData.sort(function (a, b) {
+              return a.shareHoldingPrice - b.shareHoldingPrice;
+            });
+          } else if(this.sortOrder=="desc"){
+            this.tableData.sort(function (a, b) {
+              return b.shareHoldingPrice - a.shareHoldingPrice;
+            });
+          }
         }
       });
     },
@@ -652,13 +725,20 @@ export default {
         item._showDetails = false;
       });
     },
+    editTable(){
+      this.tableEditing = true;
+      this.tableTmp = this.tableData;
+    },
+    saveTable(){
+      this.tableEditing = false;
+    },
     sortTable() {
       this.sortBy = "number";
       if (this.sortOrder == "asc") {
         this.tableData.sort(function (a, b) {
           return b.number - a.number;
         });
-        this.sortOrder = "decs";
+        this.sortOrder = "desc";
       } else {
         this.tableData.sort(function (a, b) {
           return a.number - b.number;
@@ -684,7 +764,7 @@ export default {
         this.tableData.sort(function (a, b) {
           return b.shareHolding - a.shareHolding;
         });
-        this.sortOrder = "decs";
+        this.sortOrder = "desc";
       } else {
         this.tableData.sort(function (a, b) {
           return a.shareHolding - b.shareHolding;
@@ -699,6 +779,32 @@ export default {
         })
         .then(() => {
           console.log("save shareHolding sort!");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
+    },
+    sortShareHoldingPrice(){
+      this.sortBy = "shareHoldingPrice";
+      if (this.sortOrder == "asc") {
+        this.tableData.sort(function (a, b) {
+          return b.shareHoldingPrice - a.shareHoldingPrice;
+        });
+        this.sortOrder = "desc";
+      } else {
+        this.tableData.sort(function (a, b) {
+          return a.shareHoldingPrice - b.shareHoldingPrice;
+        });
+        this.sortOrder = "asc";
+      }
+      usersCollection
+        .doc("sort")
+        .set({
+          sortBy: this.sortBy,
+          sortOrder: this.sortOrder,
+        })
+        .then(() => {
+          console.log("save shareHoldingPrice sort!");
         })
         .catch((error) => {
           console.error("Error writing document: ", error);
@@ -901,6 +1007,7 @@ export default {
       this.tableData[parentIndex]._showDetails = true;
     },
     deteleRow(data) {
+      this.tableBusy = true
       var index = this.tableData.findIndex((el) => el.id == data.item.id);
       if (data.item.stockName == "" || data.item.number == "") {
         this.tableData.splice(index, 1);
@@ -911,8 +1018,10 @@ export default {
           .then(() => {
             console.log("delete success.");
             this.tableData.splice(index, 1);
+            this.tableBusy = false;
           })
           .catch((error) => {
+            this.tableBusy = false;
             alert("刪除失敗，請找工程阿逼");
             console.log(error);
           });
