@@ -3,36 +3,36 @@
     class="d-flex flex-column align-items-center"
     style="transform: scale(0.85); height: 120vh"
   >
-    <div class="div-head">
+    <div class="div-head d-flex justify-content-center">
       <img
         src="https://firebasestorage.googleapis.com/v0/b/stockwebapp-9ad1d.appspot.com/o/footer.png?alt=media&token=dce49b27-8eb6-45de-acc1-6be1acf42ff7"
       />
     </div>
-    <div class="mb-3 mt-4" style="margin-left: -43px">
+    <div class="mb-3 mt-4 head-btn-row">
       <b-button
         class="w-10"
         variant="outline-light"
-        style="font-weight: bold"
+        style="margin-left: -40px;font-weight: bold; width:120px;"
         @click="addStock()"
         >新增股票</b-button
       >
       <b-button
         @click="closeAll()"
-        style="margin-left: 20px; font-weight: bold"
+        style="margin-left: 20px; font-weight: bold; width:65px;"
         variant="outline-light"
         >全關</b-button
       >
       <b-button
         @click="editTable()"
         v-show="!tableEditing"
-        style="margin-left: 679px; font-weight: bold"
+        style="margin-left: 639px; font-weight: bold; width:65px;"
         variant="outline-light"
         >編輯</b-button
       >
       <b-button
         @click="saveTable()"
         v-show="tableEditing"
-        style="margin-left: 679px; font-weight: bold"
+        style="margin-left: 639px; font-weight: bold; width:65px;"
         variant="outline-light"
         >儲存</b-button
       >
@@ -360,7 +360,16 @@
                     儲 存
                   </b-button>
                   <b-icon
+                    icon=""
+                    v-show="!data.item.editing"
+                    style="
+                      margin-top: 7.5px;
+                      margin-left: 8px;
+                    "
+                  ></b-icon>
+                  <b-icon
                     icon="trash"
+                    v-show="data.item.editing"
                     @click="deteleInnerRow(data, innerRow)"
                     style="
                       cursor: pointer;
@@ -401,6 +410,10 @@ body {
   width: 100vw;
   position: relative;
   top: -10px;
+}
+.head-btn-row{
+  display: flex;
+  
 }
 .fontSize {
   font-size: 16px;
